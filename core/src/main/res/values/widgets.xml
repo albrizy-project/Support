@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="AspectRatioView">
+        <attr name="orientation" format="enum">
+            <enum name="horizontal" value="0"/>
+            <enum name="vertical" value="1"/>
+        </attr>
+        <attr name="ratio" format="float"/>
+        <attr name="widthRatio" format="integer"/>
+        <attr name="heightRatio" format="integer"/>
+    </declare-styleable>
+
+    <declare-styleable name="DrawableView">
+        <attr name="dv_drawableStart" format="reference"/>
+        <attr name="dv_drawableEnd" format="reference"/>
+        <attr name="dv_drawableTop" format="reference"/>
+        <attr name="dv_drawableBottom" format="reference"/>
+    </declare-styleable>
+
+</resources>

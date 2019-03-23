@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <attr name="colorPrimaryIsLight" format="boolean"/>
+    <attr name="colorAccentIsLight" format="boolean"/>
+
+    <style name="ThemeCompat"/>
+    <style name="ThemeCompat.ColorPrimary"/>
+    <style name="ThemeCompat.ColorAccent"/>
+    <style name="ThemeCompat.ColorBackground"/>
+
+</resources>

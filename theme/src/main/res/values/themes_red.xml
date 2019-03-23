@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="ThemeCompat.ColorPrimary.Red50">
+        <item name="colorPrimary">@color/material_red_50</item>
+        <item name="colorAccent">@color/material_red_50</item>
+    </style>
+
+    <style name="ThemeCompat.ColorPrimary.Red100">
+        <item name="colorPrimary">@color/material_red_100</item>
+        <item name="colorAccent">@color/material_red_100</item>
+    </style>
+
+    <style name="ThemeCompat.ColorPrimary.Red200">
+        <item name="colorPrimary">@color/material_red_200</item>
+        <item name="colorAccent">@color/material_red_200</item>
+    </style>
+
+    <style name="ThemeCompat.ColorPrimary.Red300">
+        <item name="colorPrimary">@color/material_red_300</item>
+        <item name="colorAccent">@color/material_red_300</item>
+    </style>
+
+    <style name="ThemeCompat.ColorPrimary.Red400">
+        <item name="colorPrimary">@color/material_red_400</item>
+        <item name="colorAccent">@color/material_red_400</item>
+    </style>
+
+    <style name="ThemeCompat.ColorPrimary.Red500">
+        <item name="colorPrimary">@color/material_red_500</item>
+        <item name="colorAccent">@color/material_red_500</item>
+    </style>
+
+    <style name="ThemeCompat.ColorPrimary.Red600">
+        <item name="colorPrimary">@color/material_red_600</item>
+        <item name="colorAccent">@color/material_red_600</item>
+    </style>
+
+    <style name="ThemeCompat.ColorPrimary.Red700">
+        <item name="colorPrimary">@color/material_red_700</item>
+        <item name="colorAccent">@color/material_red_700</item>
+    </style>
+
+    <style name="ThemeCompat.ColorPrimary.Red800">
+        <item name="colorPrimary">@color/material_red_800</item>
+        <item name="colorAccent">@color/material_red_800</item>
+    </style>
+
+    <style name="ThemeCompat.ColorPrimary.Red900">
+        <item name="colorPrimary">@color/material_red_900</item>
+        <item name="colorAccent">@color/material_red_900</item>
+    </style>
+
+    <style name="ThemeCompat.ColorAccent.RedA100">
+        <item name="colorAccent">@color/material_red_A100</item>
+    </style>
+
+    <style name="ThemeCompat.ColorAccent.RedA200">
+        <item name="colorAccent">@color/material_red_A200</item>
+    </style>
+
+    <style name="ThemeCompat.ColorAccent.RedA400">
+        <item name="colorAccent">@color/material_red_A400</item>
+    </style>
+
+    <style name="ThemeCompat.ColorAccent.RedA700">
+        <item name="colorAccent">@color/material_red_A700</item>
+    </style>
+
+</resources>

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="ThemeCompat.ColorPrimary.Purple50">
+        <item name="colorPrimary">@color/material_purple_50</item>
+        <item name="colorAccent">@color/material_purple_50</item>
+    </style>
+
+    <style name="ThemeCompat.ColorPrimary.Purple100">
+        <item name="colorPrimary">@color/material_purple_100</item>
+        <item name="colorAccent">@color/material_purple_100</item>
+    </style>
+
+    <style name="ThemeCompat.ColorPrimary.Purple200">
+        <item name="colorPrimary">@color/material_purple_200</item>
+        <item name="colorAccent">@color/material_purple_200</item>
+    </style>
+
+    <style name="ThemeCompat.ColorPrimary.Purple300">
+        <item name="colorPrimary">@color/material_purple_300</item>
+        <item name="colorAccent">@color/material_purple_300</item>
+    </style>
+
+    <style name="ThemeCompat.ColorPrimary.Purple400">
+        <item name="colorPrimary">@color/material_purple_400</item>
+        <item name="colorAccent">@color/material_purple_400</item>
+    </style>
+
+    <style name="ThemeCompat.ColorPrimary.Purple500">
+        <item name="colorPrimary">@color/material_purple_500</item>
+        <item name="colorAccent">@color/material_purple_500</item>
+
+    </style>
+
+    <style name="ThemeCompat.ColorPrimary.Purple600">
+        <item name="colorPrimary">@color/material_purple_600</item>
+        <item name="colorAccent">@color/material_purple_600</item>
+    </style>
+
+    <style name="ThemeCompat.ColorPrimary.Purple700">
+        <item name="colorPrimary">@color/material_purple_700</item>
+        <item name="colorAccent">@color/material_purple_700</item>
+    </style>
+
+    <style name="ThemeCompat.ColorPrimary.Purple800">
+        <item name="colorPrimary">@color/material_purple_800</item>
+        <item name="colorAccent">@color/material_purple_800</item>
+    </style>
+
+    <style name="ThemeCompat.ColorPrimary.Purple900">
+        <item name="colorPrimary">@color/material_purple_900</item>
+        <item name="colorAccent">@color/material_purple_900</item>
+    </style>
+
+    <style name="ThemeCompat.ColorAccent.PurpleA100">
+        <item name="colorAccent">@color/material_purple_A100</item>
+    </style>
+
+    <style name="ThemeCompat.ColorAccent.PurpleA200">
+        <item name="colorAccent">@color/material_purple_A200</item>
+    </style>
+
+    <style name="ThemeCompat.ColorAccent.PurpleA400">
+        <item name="colorAccent">@color/material_purple_A400</item>
+    </style>
+
+    <style name="ThemeCompat.ColorAccent.PurpleA700">
+        <item name="colorAccent">@color/material_purple_A700</item>
+    </style>
+
+</resources>
