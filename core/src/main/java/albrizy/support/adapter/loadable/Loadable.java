@@ -17,6 +17,8 @@ public class Loadable extends RecyclerView.OnScrollListener {
     boolean isLoading;
     private int dy;
 
+    Loadable() {}
+
     @Override
     public void onScrolled(@NonNull RecyclerView recycler, int dx, int dy) {
         this.dy = dy;

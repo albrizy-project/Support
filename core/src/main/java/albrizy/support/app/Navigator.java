@@ -75,10 +75,10 @@ public class Navigator {
                     remove(ft, position);
                     add(ft, position);
                 } else {
-                    show(ft, position);
+                    show(ft, i);
                 }
             } else {
-                hide(ft, position);
+                hide(ft, i);
             }
         }
         if (allowingStateLoss) {
@@ -108,8 +108,9 @@ public class Navigator {
     }
 
     private void add(FragmentTransaction ft, int position) {
+        String tag = adapter.getTag(position);
         Fragment fragment = adapter.onCreateFragment(position);
-        ft.add(containerId, fragment, adapter.getTag(position));
+        ft.add(containerId, fragment, tag);
     }
 
     private void remove(FragmentTransaction ft, int position) {
