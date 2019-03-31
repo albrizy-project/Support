@@ -2,7 +2,6 @@ package albrizy.support.app;
 
 import android.os.Bundle;
 import android.support.annotation.IdRes;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -11,7 +10,7 @@ import android.support.v4.app.FragmentTransaction;
 @SuppressWarnings("WeakerAccess")
 public class Navigator {
 
-    private static final String EXTRA_POSITION = "EXTRA_POSITION";
+    private static final String EXTRA_POSITION = "naviagtor_current_position";
 
     public interface Adapter {
         Fragment onCreateFragment(int position);
@@ -19,24 +18,24 @@ public class Navigator {
         int getCount();
     }
 
-    @NonNull
-    private final Adapter adapter;
     private final FragmentManager manager;
+    private final Adapter adapter;
 
     @IdRes
-    private final int containerId;
+    private int containerId;
     private int defaultPosition;
     private int currentPosition;
 
-    public Navigator(FragmentManager manager, @NonNull Adapter adapter, @IdRes int idRes) {
+    public Navigator(FragmentManager manager, Adapter adapter, @IdRes int containerId) {
         this.manager = manager;
         this.adapter = adapter;
-        this.containerId = idRes;
+        this.containerId = containerId;
     }
 
     public void onCreate(@Nullable Bundle savedInstanceState) {
         if (savedInstanceState != null) {
-            currentPosition = savedInstanceState.getInt(EXTRA_POSITION, defaultPosition);
+            currentPosition = savedInstanceState.getInt(EXTRA_POSITION,
+                    defaultPosition);
         }
     }
 
@@ -44,8 +43,8 @@ public class Navigator {
         outState.putInt(EXTRA_POSITION, currentPosition);
     }
 
-    public void setDefaultPosition(int defaultPosition) {
-        this.defaultPosition = defaultPosition;
+    public void setDefaultPosition(int position) {
+        this.defaultPosition = position;
     }
 
     public int getCurrentPosition() {
@@ -68,35 +67,44 @@ public class Navigator {
         this.showFragment(position, reset, false);
     }
 
-    public void showFragment(int position, boolean reset, boolean allowStateLoss) {
-        final FragmentTransaction ft = manager.beginTransaction();
+    public void showFragment(int position, boolean reset, boolean allowingStateLoss) {
+        FragmentTransaction ft = manager.beginTransaction();
         for(int i = 0; i < adapter.getCount(); i++) {
             if (position == i) {
                 if (reset) {
-                    removeFragment(ft, position);
-                    addFragment(ft, position);
+                    remove(ft, position);
+                    add(ft, position);
                 } else {
-                    showFragment(ft, position);
+                    show(ft, position);
                 }
             } else {
-                hideFragment(ft, position);
+                hide(ft, position);
             }
         }
-        commitTransaction(ft, allowStateLoss);
+        if (allowingStateLoss) {
+            ft.commitAllowingStateLoss();
+        } else {
+            ft.commit();
+        }
         currentPosition = position;
     }
 
-    private void showFragment(FragmentTransaction ft, int position) {
+    private void add(FragmentTransaction ft, int position) {
+        Fragment fragment = adapter.onCreateFragment(position);
+        ft.add(containerId, fragment, adapter.getTag(position));
+    }
+
+    private void show(FragmentTransaction ft, int position) {
         String tag = adapter.getTag(position);
         Fragment fragment = manager.findFragmentByTag(tag);
         if (fragment == null) {
-            addFragment(ft, position);
+            add(ft, position);
         } else {
             ft.show(fragment);
         }
     }
 
-    private void hideFragment(FragmentTransaction ft, int position) {
+    private void hide(FragmentTransaction ft, int position) {
         String tag = adapter.getTag(position);
         Fragment fragment = manager.findFragmentByTag(tag);
         if (fragment != null) {
@@ -104,25 +112,11 @@ public class Navigator {
         }
     }
 
-    private void addFragment(FragmentTransaction ft, int position) {
-        String tag = adapter.getTag(position);
-        Fragment fragment = adapter.onCreateFragment(position);
-        ft.add(containerId, fragment, tag);
-    }
-
-    private void removeFragment(FragmentTransaction ft, int position) {
+    private void remove(FragmentTransaction ft, int position) {
         String tag = adapter.getTag(position);
         Fragment fragment = manager.findFragmentByTag(tag);
         if (fragment != null) {
             ft.remove(fragment);
-        }
-    }
-
-    private void commitTransaction(FragmentTransaction ft, boolean allowStateLoss) {
-        if (allowStateLoss) {
-            ft.commitAllowingStateLoss();
-        } else {
-            ft.commit();
         }
     }
 }
