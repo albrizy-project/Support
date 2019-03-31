@@ -31,7 +31,6 @@ android {
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-    implementation project(':core')
     implementation library.appcompat
-    implementation library.design
+    implementation library.admob
 }

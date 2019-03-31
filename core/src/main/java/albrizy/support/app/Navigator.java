@@ -78,6 +78,8 @@ public class Navigator {
                 } else {
                     showFragment(ft, position);
                 }
+            } else {
+                hideFragment(ft, position);
             }
         }
         commitTransaction(ft, allowStateLoss);

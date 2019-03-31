@@ -6,7 +6,7 @@ android {
         minSdkVersion config.minSdkVersion
         targetSdkVersion config.targetSdkVersion
 
-        applicationId "com.albrizy.supportsample"
+        applicationId config.applicationId
         versionCode config.versionCode
         versionName config.versionName
     }
@@ -25,7 +25,6 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation project(':core')
-    implementation project(':theme')
 
     implementation library.appcompat
     implementation library.design
