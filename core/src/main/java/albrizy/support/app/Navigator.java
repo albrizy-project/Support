@@ -89,11 +89,6 @@ public class Navigator {
         currentPosition = position;
     }
 
-    private void add(FragmentTransaction ft, int position) {
-        Fragment fragment = adapter.onCreateFragment(position);
-        ft.add(containerId, fragment, adapter.getTag(position));
-    }
-
     private void show(FragmentTransaction ft, int position) {
         String tag = adapter.getTag(position);
         Fragment fragment = manager.findFragmentByTag(tag);
@@ -110,6 +105,11 @@ public class Navigator {
         if (fragment != null) {
             ft.hide(fragment);
         }
+    }
+
+    private void add(FragmentTransaction ft, int position) {
+        Fragment fragment = adapter.onCreateFragment(position);
+        ft.add(containerId, fragment, adapter.getTag(position));
     }
 
     private void remove(FragmentTransaction ft, int position) {
