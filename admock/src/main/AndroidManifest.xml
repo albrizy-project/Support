@@ -1,23 +1,16 @@
 <manifest
-    xmlns:tools="http://schemas.android.com/tools"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    package="albrizy.support.admob">
-
-    <uses-permission android:name="android.permission.INTERNET"/>
+    xmlns:tools="http://schemas.android.com/tools"
+    package="albrizy.support.admock">
 
     <application
         tools:ignore="AllowBackup,GoogleAppIndexingWarning">
 
         <activity
-            android:name="com.google.android.gms.ads.AdActivity"
+            android:name=".AdActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"
             android:screenOrientation="nosensor"
             android:noHistory="true"/>
 
-        <meta-data
-            android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="@string/admob_id"/>
-
     </application>
-
 </manifest>

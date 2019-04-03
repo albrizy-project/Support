@@ -18,6 +18,10 @@ ext.library = [
     design       : 'com.android.support:design:28.0.0',
     customtabs   : 'com.android.support:customtabs:28.0.0',
     admob        : 'com.google.android.gms:play-services-ads:17.2.0',
+    glide        : 'com.github.bumptech.glide:glide:3.8.0',
+    okhttp       : 'com.squareup.okhttp3:okhttp:3.14.0',
+    retrofit     : 'com.squareup.retrofit2:retrofit:2.5.0',
+    gson         : 'com.google.code.gson:gson:2.8.5',
     butterknife  : 'com.jakewharton:butterknife:8.8.1',
     butterknifecompiler : 'com.jakewharton:butterknife-compiler:8.8.1'
 ]

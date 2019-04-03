@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="admob_id">ca-app-pub-3940256099942544~3347511713</string>
+    <integer name="admob_interstitial_show_after_clicks">4</integer>
+    <integer name="admob_hide_duration">15000</integer>
+
+    <string-array name="admob_banner_ids">
+        <item>ca-app-pub-3940256099942544/6300978111</item>
+        <item>ca-app-pub-3940256099942544/6300978111</item>
+    </string-array>
+
+    <string-array name="admob_interstitial_ids">
+        <item>ca-app-pub-3940256099942544/1033173712</item>
+        <item>ca-app-pub-3940256099942544/6300978111</item>
+    </string-array>
+
+    <string-array name="admob_keywords"/>
+    <string-array name="admob_test_device_ids"/>
+
+</resources>
