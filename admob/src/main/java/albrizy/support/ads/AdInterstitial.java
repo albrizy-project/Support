@@ -17,7 +17,6 @@ class AdInterstitial {
     private int requestCount;
 
     AdInterstitial(Context context) {
-        this.requestCount = MobileAds.instance.interstitialShowAfterClicks - 1;
         this.context = context;
     }
 
@@ -28,6 +27,10 @@ class AdInterstitial {
         interstitial.setAdUnitId(adUnits[index]);
         interstitial.setAdListener(adListener);
         adListener.onAdClosed();
+    }
+
+    void setRequestCount(int requestCount) {
+        this.requestCount = requestCount;
     }
 
     void show(boolean force) {

@@ -65,6 +65,7 @@ public class MobileAds {
     }
 
     public MobileAds setInterstitialShowAfterClicks(int i) {
+        this.interstitial.setRequestCount(i - 1);
         this.interstitialShowAfterClicks = i;
         return this;
     }
