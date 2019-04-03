@@ -1,9 +1,11 @@
 package albrizy.support.ads;
 
 import android.content.Context;
+import android.content.Intent;
 
 import okhttp3.OkHttpClient;
 
+@SuppressWarnings("WeakerAccess")
 public class MobileAds {
 
     static MobileAds instance;
@@ -14,17 +16,26 @@ public class MobileAds {
         return instance;
     }
 
+    public static void showInterstitial(Context context) {
+        showInterstitial(context, false);
+    }
+
+    public static void showInterstitial(Context context, boolean forceShow) {
+        Intent intent = new Intent(context, AdActivity.class);
+        context.startActivity(intent);
+    }
+
     String adId;
     OkHttpClient client;
 
     private MobileAds() {}
 
-    MobileAds setId(String adId) {
+    public MobileAds setId(String adId) {
         this.adId = adId;
         return this;
     }
 
-    MobileAds setClient(OkHttpClient client) {
+    public MobileAds setClient(OkHttpClient client) {
         this.client = client;
         return this;
     }
