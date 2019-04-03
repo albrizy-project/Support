@@ -1,8 +1,12 @@
-package albrizy.support.admock;
+package albrizy.support.ads;
 
 import android.annotation.SuppressLint;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.TypedArray;
+import android.net.Uri;
+import android.os.Build;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringDef;
 import android.util.AttributeSet;
@@ -15,10 +19,11 @@ import com.bumptech.glide.request.target.Target;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
+import java.lang.reflect.Method;
 import java.util.Map;
 import java.util.Random;
 
-import albrizy.support.admock.MobileAds.OnResponseListener;
+import albrizy.support.ads.AdLoader.OnResponseListener;
 
 @SuppressLint("AppCompatCustomView")
 public class AdLayout extends ImageView implements OnResponseListener {
@@ -47,7 +52,7 @@ public class AdLayout extends ImageView implements OnResponseListener {
 
     public AdLayout(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        MobileAds.onResponseListeners.add(this);
+        AdLoader.onResponseListeners.add(this);
         if (attrs != null) {
             TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.AdLayout);
             setAdType(a.getInt(R.styleable.AdLayout_ad_type, 0));
@@ -83,7 +88,7 @@ public class AdLayout extends ImageView implements OnResponseListener {
                     .listener(glideListener)
                     .dontAnimate()
                     .into(this);
-            setOnClickListener(v -> MobileAds.onAdClick(getContext(), item));
+            setOnClickListener(v -> onAdClick(getContext(), item));
         }
     }
 
@@ -96,11 +101,11 @@ public class AdLayout extends ImageView implements OnResponseListener {
     }
 
     public void onResume() {
-        Map<String, AdResponse> ads = MobileAds.ads;
+        final Map<String, AdResponse> ads = AdLoader.adMap;
         if (ads != null) {
             setupAd(ads.get(adType));
         } else {
-            MobileAds.Loader loader = new MobileAds.Loader();
+            AdLoader.Task loader = new AdLoader.Task();
             loader.execute();
         }
     }
@@ -111,8 +116,9 @@ public class AdLayout extends ImageView implements OnResponseListener {
     }
 
     public void onPause() {}
+
     public void onDestroy() {
-        MobileAds.onResponseListeners.remove(this);
+        AdLoader.onResponseListeners.remove(this);
     }
 
     private final RequestListener glideListener = new RequestListener() {
@@ -126,6 +132,29 @@ public class AdLayout extends ImageView implements OnResponseListener {
             return onAdRequested(false);
         }
     };
+
+    @SuppressWarnings("unchecked")
+    private static void onAdClick(Context context, AdResponse.Item item) {
+        try {
+            Class clazz = Class.forName("albrizy.support.browser.Browser");
+            Method method = clazz.getDeclaredMethod("open", Context.class, String.class);
+            method.invoke(null, context, item.link);
+        } catch (Exception e) {
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            intent.setData(Uri.parse(item.link));
+            if (Build.VERSION.SDK_INT >= 21)
+                intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY
+                        | Intent.FLAG_ACTIVITY_NEW_DOCUMENT
+                        | Intent.FLAG_ACTIVITY_MULTIPLE_TASK
+                );
+            else intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY
+                    | Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET
+                    | Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
+            try {
+                context.startActivity(intent);
+            } catch (ActivityNotFoundException ignored) {}
+        }
+    }
 
     public interface AdListener {
         void onAdLoaded(boolean success);

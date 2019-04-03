@@ -1,9 +1,9 @@
-package albrizy.support.admob;
+package albrizy.support.ads;
 
 import android.content.Context;
-import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.support.annotation.Nullable;
+import android.support.annotation.StringDef;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -12,21 +12,27 @@ import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.AdView;
 
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
 
-import albrizy.support.admob.MobileAds.OnAdClickListener;
+import albrizy.support.ads.MobileAds.OnAdClickListener;
 
 public class AdLayout extends FrameLayout implements OnAdClickListener {
+
+    public static final String TYPE_BANNER = "BANNER";
+    public static final String TYPE_RECTANGLE = "RECTANGLE";
+
+    @SuppressWarnings("WeakerAccess")
+    @Retention(RetentionPolicy.SOURCE)
+    @StringDef({TYPE_BANNER, TYPE_RECTANGLE})
+    public @interface AdType {}
 
     @Nullable
     private AdView adView;
     private AdSize adSize;
-    private final String[] adUnits;
-    private final String[] adKeywords;
-    private final String[] adTestDevices;
-    private final int adHideDuration;
     private boolean adLoaded;
     private boolean adClicked;
     private boolean destroyed;
@@ -45,12 +51,7 @@ public class AdLayout extends FrameLayout implements OnAdClickListener {
 
     public AdLayout(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        final Resources resources = getResources();
-        adUnits = resources.getStringArray(R.array.admob_banner_ids);
-        adKeywords = resources.getStringArray(R.array.admob_keywords);
-        adTestDevices = resources.getStringArray(R.array.admob_test_device_ids);
-        adHideDuration = resources.getInteger(R.integer.admob_hide_duration);
-        onAdClickListeners.add(this);
+        AdLayout.onAdClickListeners.add(this);
         if (attrs != null) {
             TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.AdLayout);
             setAdType(a.getInt(R.styleable.AdLayout_ad_type, 0));
@@ -59,6 +60,7 @@ public class AdLayout extends FrameLayout implements OnAdClickListener {
     }
 
     private void setupAd() {
+        final String[] adUnits = MobileAds.instance.bannerIds;
         final int index = new Random().nextInt(adUnits.length);
         adView = new AdView(getContext());
         adView.setAdListener(adListener);
@@ -74,8 +76,10 @@ public class AdLayout extends FrameLayout implements OnAdClickListener {
                 : AdSize.SMART_BANNER;
     }
 
-    public void setAdType(AdSize adSize) {
-        this.adSize = adSize;
+    public void setAdType(@AdType String adType) {
+        this.adSize = adType.equals(TYPE_RECTANGLE)
+                ? AdSize.MEDIUM_RECTANGLE
+                : AdSize.SMART_BANNER;
     }
 
     public void setOnLoadListener(@Nullable OnLoadListener listener) {
@@ -93,7 +97,7 @@ public class AdLayout extends FrameLayout implements OnAdClickListener {
             if (!destroyed) {
                 onResume();
             }
-        }, adHideDuration);
+        }, MobileAds.instance.hideDuration);
     }
 
     public void onResume() {
@@ -101,10 +105,7 @@ public class AdLayout extends FrameLayout implements OnAdClickListener {
         if (adView == null) setupAd();
         if (adLoaded) {
             adView.resume();
-        } else adView.loadAd(MobileAds.getRequest(
-                adTestDevices,
-                adKeywords
-        ));
+        } else adView.loadAd(MobileAds.getRequest());
     }
 
     public void onPause() {

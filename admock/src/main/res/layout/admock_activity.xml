@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <albrizy.support.admock.AdLayout
+    <albrizy.support.ads.AdLayout
         android:id="@+id/ad_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

@@ -1,7 +1,7 @@
 <manifest
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="albrizy.support.admock">
+    package="albrizy.support.ads">
 
     <application
         tools:ignore="AllowBackup,GoogleAppIndexingWarning">
@@ -13,4 +13,5 @@
             android:noHistory="true"/>
 
     </application>
+
 </manifest>

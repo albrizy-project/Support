@@ -1,11 +1,6 @@
-package albrizy.support.admock;
+package albrizy.support.ads;
 
-import android.content.ActivityNotFoundException;
-import android.content.Context;
-import android.content.Intent;
-import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.support.annotation.Nullable;
 
 import org.json.JSONArray;
@@ -13,7 +8,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -24,61 +18,34 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
-public class MobileAds {
+class AdLoader {
 
     @Nullable
-    static Map<String, AdResponse> ads;
+    static Map<String, AdResponse> adMap;
     static Set<OnResponseListener> onResponseListeners;
-    private static OkHttpClient okHttpClient;
-    private static String adId;
 
-    public static void initialize(Context context, OkHttpClient client) {
+    static {
         onResponseListeners = new HashSet<>();
-        okHttpClient = client;
-        adId = context.getString(R.string.admock_id);
-    }
-
-    @SuppressWarnings("unchecked")
-    static void onAdClick(Context context, AdResponse.Item item) {
-        try {
-            Class clazz = Class.forName("albrizy.support.browser.Browser");
-            Method method = clazz.getDeclaredMethod("open", Context.class, String.class);
-            method.invoke(null, context, item.link);
-        } catch (Exception e) {
-            Intent intent = new Intent(Intent.ACTION_VIEW);
-            intent.setData(Uri.parse(item.link));
-            if (Build.VERSION.SDK_INT >= 21)
-                intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY
-                        | Intent.FLAG_ACTIVITY_NEW_DOCUMENT
-                        | Intent.FLAG_ACTIVITY_MULTIPLE_TASK
-                );
-            else intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY
-                    | Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET
-                    | Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
-            try {
-                context.startActivity(intent);
-            } catch (ActivityNotFoundException ignored) {}
-        }
     }
 
     interface OnResponseListener {
         void onResponse();
     }
 
-    static class Loader extends AsyncTask<Void, Void, Map<String, AdResponse>> {
-
-        private static final String URL = "http://drive.google.com/uc?export=download&id=";
+    static class Task extends AsyncTask<Void, Void, Map<String, AdResponse>> {
 
         @Override
         @SuppressWarnings("ConstantConditions")
         protected Map<String, AdResponse> doInBackground(Void... voids) {
-            if (okHttpClient != null) {
+            final OkHttpClient client = MobileAds.instance.client;
+            final String id = MobileAds.instance.adId;
+            if (client != null) {
                 Request request = new Request.Builder()
-                        .url(URL + adId)
+                        .url("https://drive.google.com/uc?export=download&id=" + id)
                         .header("Cache-Exp", "900")
                         .build();
                 try {
-                    Response response = okHttpClient.newCall(request).execute();
+                    Response response = client.newCall(request).execute();
                     JSONObject object = new JSONObject(response.body().string());
                     return doParse(object);
                 } catch (IOException e) {
@@ -114,7 +81,8 @@ public class MobileAds {
 
         @Override
         protected void onPostExecute(Map<String, AdResponse> result) {
-            for (OnResponseListener listener : onResponseListeners) {
+            AdLoader.adMap = result;
+            for (AdLoader.OnResponseListener listener : onResponseListeners) {
                 listener.onResponse();
             }
         }

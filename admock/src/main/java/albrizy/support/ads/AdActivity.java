@@ -1,4 +1,4 @@
-package albrizy.support.admock;
+package albrizy.support.ads;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;

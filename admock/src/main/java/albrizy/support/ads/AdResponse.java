@@ -1,4 +1,4 @@
-package albrizy.support.admock;
+package albrizy.support.ads;
 
 @SuppressWarnings("WeakerAccess")
 class AdResponse {
