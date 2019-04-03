@@ -17,16 +17,17 @@ public class MobileAds {
     }
 
     public static void showInterstitial(Context context) {
-        showInterstitial(context, false);
+        instance.show(context, false);
     }
 
     public static void showInterstitial(Context context, boolean forceShow) {
-        Intent intent = new Intent(context, AdActivity.class);
-        context.startActivity(intent);
+        instance.show(context, forceShow);
     }
 
     String adId;
     OkHttpClient client;
+    private int interstitialShowAfterClicks;
+    private int requestCount;
 
     private MobileAds() {}
 
@@ -38,5 +39,20 @@ public class MobileAds {
     public MobileAds setClient(OkHttpClient client) {
         this.client = client;
         return this;
+    }
+
+    public MobileAds setInterstitialShowAfterClicks(int i) {
+        this.interstitialShowAfterClicks = i;
+        this.requestCount = i - 1;
+        return this;
+    }
+
+    private void show(Context context, boolean force) {
+        if (force) requestCount = interstitialShowAfterClicks;
+        if (requestCount >= interstitialShowAfterClicks) {
+            Intent intent = new Intent(context, AdActivity.class);
+            context.startActivity(intent);
+            requestCount = 0;
+        } else requestCount++;
     }
 }
