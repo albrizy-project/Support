@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/frame_action"
+    android:layout_width="match_parent"
+    android:layout_height="57dp">
+
+    <TextView
+        android:id="@+id/cancel"
+        android:layout_toLeftOf="@id/space"
+        android:layout_toStartOf="@id/space"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        tools:text="Cancel"
+        style="@style/TextAppearance.AppCompat.Widget.Button.Borderless.Colored"/>
+
+    <View
+        android:id="@+id/space"
+        android:layout_width="1dp"
+        android:layout_height="match_parent"
+        android:layout_centerHorizontal="true"
+        android:background="?colorControlHighlight"/>
+
+    <TextView
+        android:id="@+id/action"
+        android:layout_toRightOf="@id/space"
+        android:layout_toEndOf="@id/space"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        tools:text="Action"
+        style="@style/TextAppearance.AppCompat.Widget.Button.Borderless.Colored"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="?colorControlHighlight"/>
+
+</RelativeLayout>

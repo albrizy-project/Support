@@ -11,7 +11,10 @@ import android.support.v7.app.AppCompatDialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
+import albrizy.support.R2;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
@@ -19,6 +22,13 @@ import static android.content.res.Configuration.ORIENTATION_LANDSCAPE;
 import static android.content.res.Configuration.ORIENTATION_PORTRAIT;
 
 public abstract class SupportDialogFragment extends AppCompatDialogFragment {
+
+    @BindView(R2.id.frame_ad) protected ViewGroup frameAd;
+    @BindView(R2.id.frame_content) protected ViewGroup frameContent;
+
+    @BindView(R2.id.title) protected TextView title;
+    @BindView(R2.id.action) protected TextView action;
+    @BindView(R2.id.cancel) protected TextView cancel;
 
     @LayoutRes
     protected abstract int getLayoutRes();
