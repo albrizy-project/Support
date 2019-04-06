@@ -3,15 +3,15 @@
 
     <string name="ad_id"/>
     <integer name="ad_interstitial_show_after_clicks">4</integer>
-    <integer name="ad_hide_duration">15000</integer>
+    <integer name="ad_hide_duration">1500</integer>
 
     <declare-styleable name="AdLayout">
         <attr name="ad_type" format="enum">
             <enum name="banner" value="0" />
             <enum name="rectangle" value="1"/>
             <enum name="interstitial" value="2"/>
-            <enum name="native" value="3"/>
+            <enum name="custom" value="3"/>
         </attr>
     </declare-styleable>
-
+    
 </resources>
