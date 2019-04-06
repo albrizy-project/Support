@@ -12,9 +12,9 @@ public class MobileAds {
         return interstitial;
     }
 
-    public static void initialize(Application app, Object arg) {
+    public static void initialize(Application app, Object client) {
         AdLoader.adId = app.getString(R.string.ad_id);
-        AdLoader.client = (OkHttpClient) arg;
+        AdLoader.client = (OkHttpClient) client;
         interstitial = new AdInterstitial(app);
     }
 }

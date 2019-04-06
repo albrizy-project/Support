@@ -27,12 +27,12 @@ public class AdInterstitial {
         Resources res = context.getResources();
         this.handler = new ClickHandler();
         this.request = new AdRequest.Builder();
-        this.adUnits = res.getStringArray(R.array.ad_interstitial);
+        this.adUnits = MobileAds.resolveArrayRes(res, R.string.ad_interstitial);
         this.showAfterClicks = res.getInteger(R.integer.ad_interstitial_show_after_clicks);
         this.hideDuration = res.getInteger(R.integer.ad_hide_duration);
 
-        for (String s : res.getStringArray(R.array.ad_devices)) request.addTestDevice(s);
-        for (String s : res.getStringArray(R.array.ad_keywords)) request.addKeyword(s);
+        for (String s : MobileAds.resolveArrayRes(res, R.string.ad_devices)) request.addTestDevice(s);
+        for (String s : MobileAds.resolveArrayRes(res, R.string.ad_keywords)) request.addKeyword(s);
     }
 
     public void setAdListener(@Nullable AdListener listener) {

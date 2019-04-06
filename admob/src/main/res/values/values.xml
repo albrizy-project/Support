@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string-array name="ad_banners"/>
-    <string-array name="ad_interstitial"/>
-    <string-array name="ad_keywords"/>
-    <string-array name="ad_devices"/>
+    <string name="ad_banners"/>
+    <string name="ad_interstitial"/>
+    <string name="ad_keywords"/>
+    <string name="ad_devices"/>
 
 </resources>

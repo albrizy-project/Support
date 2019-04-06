@@ -37,8 +37,7 @@ public class AdLayout extends FrameLayout implements AdCallback, OnClickedChange
 
     public AdLayout(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        Resources res = context.getResources();
-        adUnits = res.getStringArray(R.array.ad_banners);
+        adUnits = MobileAds.resolveArrayRes(context.getResources(), R.string.ad_banners);
         handler.register(this);
         if (attrs != null) {
             TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.AdLayout);
