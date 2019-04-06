@@ -23,6 +23,8 @@ class AdLoader {
     @Nullable
     static Map<String, AdResponse> adMap;
     static Set<OnResponseListener> onResponseListeners;
+    static OkHttpClient client;
+    static String adId;
 
     static {
         onResponseListeners = new HashSet<>();
@@ -37,11 +39,9 @@ class AdLoader {
         @Override
         @SuppressWarnings("ConstantConditions")
         protected Map<String, AdResponse> doInBackground(Void... voids) {
-            final OkHttpClient client = MobileAds.instance.client;
-            final String id = MobileAds.instance.adId;
             if (client != null) {
                 Request request = new Request.Builder()
-                        .url("https://drive.google.com/uc?export=download&id=" + id)
+                        .url("https://drive.google.com/uc?export=download&id=" + adId)
                         .header("Cache-Exp", "900")
                         .build();
                 try {

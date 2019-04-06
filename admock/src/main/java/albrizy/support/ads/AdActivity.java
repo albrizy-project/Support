@@ -14,6 +14,7 @@ public class AdActivity extends AppCompatActivity {
         setContentView(R.layout.admock_activity);
         findViewById(R.id.ad_close).setOnClickListener(v -> supportFinishAfterTransition());
         adLayout = findViewById(R.id.ad_layout);
+        adLayout.setAdListener(MobileAds.getInterstitial().adListener);
     }
 
     @Override

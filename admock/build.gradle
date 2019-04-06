@@ -13,9 +13,11 @@ android {
         versionName config.versionName
     }
     sourceSets {
-        main.res.srcDirs = [
-                'src/main/res',
-                'src/main/res-public'
+        main.java.srcDirs += ['../gradle/ads/java']
+        main.res.srcDirs += [
+                '../gradle/ads/res',
+                '../gradle/ads/res-public',
+                'src/main/res-public',
         ]
     }
     buildTypes {

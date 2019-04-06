@@ -1,13 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="admob_id"/>
-
-    <declare-styleable name="AdLayout">
-        <attr name="ad_type" format="enum">
-            <enum name="banner" value="0" />
-            <enum name="rectangle" value="1"/>
-        </attr>
-    </declare-styleable>
+    <string-array name="ad_banners"/>
+    <string-array name="ad_interstitial"/>
+    <string-array name="ad_keywords"/>
+    <string-array name="ad_devices"/>
 
 </resources>

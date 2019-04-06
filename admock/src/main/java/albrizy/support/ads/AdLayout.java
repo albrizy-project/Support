@@ -8,8 +8,8 @@ import android.content.res.TypedArray;
 import android.net.Uri;
 import android.os.Build;
 import android.support.annotation.Nullable;
-import android.support.annotation.StringDef;
 import android.util.AttributeSet;
+import android.view.View;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
@@ -17,30 +17,17 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
 import java.lang.reflect.Method;
 import java.util.Map;
 import java.util.Random;
 
-import albrizy.support.ads.AdLoader.OnResponseListener;
-
 @SuppressLint("AppCompatCustomView")
-public class AdLayout extends ImageView implements OnResponseListener {
-
-    public static final String TYPE_BANNER = "BANNER";
-    public static final String TYPE_RECTANGLE = "RECTANGLE";
-    public static final String TYPE_INTERSTITIAL = "INTERSTITIAL";
-    public static final String TYPE_NATIVE = "NATIVE";
-
-    @SuppressWarnings("WeakerAccess")
-    @Retention(RetentionPolicy.SOURCE)
-    @StringDef({TYPE_BANNER, TYPE_RECTANGLE, TYPE_INTERSTITIAL, TYPE_NATIVE})
-    public @interface AdType {}
+public class AdLayout extends ImageView implements AdCallback, AdLoader.OnResponseListener {
 
     @Nullable
     private AdListener adListener;
-    private String adType;
+    private AdType adType;
+    private int failedVisibility = View.INVISIBLE;
 
     public AdLayout(Context context) {
         this(context, null);
@@ -60,54 +47,37 @@ public class AdLayout extends ImageView implements OnResponseListener {
         }
     }
 
-    private void setAdType(int adType) {
+    @Override
+    public void setAdType(int adType) {
         switch (adType) {
-            case 3: setAdType(TYPE_NATIVE); break;
-            case 2: setAdType(TYPE_INTERSTITIAL); break;
-            case 1: setAdType(TYPE_RECTANGLE); break;
-            default: setAdType(TYPE_BANNER); break;
+            case 3: setAdType(AdType.NATIVE); break;
+            case 2: setAdType(AdType.INTERSTITIAL); break;
+            case 1: setAdType(AdType.RECTANGLE); break;
+            default: setAdType(AdType.BANNER); break;
         }
     }
 
-    public void setAdType(@AdType String adType) {
+    @Override
+    public void setAdType(AdType adType) {
         this.adType = adType;
     }
 
-    public void setAdListener(@Nullable AdListener adListener) {
-        this.adListener = adListener;
+    @Override
+    public void setAdListener(@Nullable AdListener listener) {
+        this.adListener = listener;
     }
 
-    @SuppressWarnings("unchecked")
-    private void setupAd(AdResponse adResponse) {
-        if (adResponse != null && !adResponse.isError) {
-            final int index = new Random().nextInt(adResponse.adItems.length);
-            AdResponse.Item item = adResponse.adItems[index];
-            Glide.with(getContext())
-                    .load(item.image)
-                    .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-                    .listener(glideListener)
-                    .dontAnimate()
-                    .into(this);
-            setOnClickListener(v -> onAdClick(getContext(), item));
-        }
+    @Override
+    public void setFailedVisibility(int visibility) {
+        this.failedVisibility = visibility;
     }
 
     private boolean onAdRequested(boolean success) {
-        setVisibility(success ? VISIBLE : INVISIBLE);
+        setVisibility(success ? VISIBLE : failedVisibility);
         if (adListener != null) {
-            adListener.onAdLoaded(success);
+            adListener.onAdRequested(success, 0);
         }
         return false;
-    }
-
-    public void onResume() {
-        final Map<String, AdResponse> ads = AdLoader.adMap;
-        if (ads != null) {
-            setupAd(ads.get(adType));
-        } else {
-            AdLoader.Task loader = new AdLoader.Task();
-            loader.execute();
-        }
     }
 
     @Override
@@ -115,8 +85,38 @@ public class AdLayout extends ImageView implements OnResponseListener {
         onResume();
     }
 
+    @Override
+    public void onResume() {
+        final Map<String, AdResponse> ads = AdLoader.adMap;
+        if (ads != null) {
+            AdResponse adResponse = ads.get(adType.name());
+            if (adResponse != null && !adResponse.isError) {
+                final int index = new Random().nextInt(adResponse.adItems.length);
+                AdResponse.Item item = adResponse.adItems[index];
+                //noinspection unchecked
+                Glide.with(getContext())
+                        .load(item.image)
+                        .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                        .listener(glideListener)
+                        .dontAnimate()
+                        .into(this);
+                setOnClickListener(v -> {
+                    onAdClick(getContext(), item);
+                    if (adListener != null) {
+                        adListener.onAdClicked();
+                    }
+                });
+            }
+        } else {
+            AdLoader.Task loader = new AdLoader.Task();
+            loader.execute();
+        }
+    }
+
+    @Override
     public void onPause() {}
 
+    @Override
     public void onDestroy() {
         AdLoader.onResponseListeners.remove(this);
     }
@@ -154,9 +154,5 @@ public class AdLayout extends ImageView implements OnResponseListener {
                 context.startActivity(intent);
             } catch (ActivityNotFoundException ignored) {}
         }
-    }
-
-    public interface AdListener {
-        void onAdLoaded(boolean success);
     }
 }
