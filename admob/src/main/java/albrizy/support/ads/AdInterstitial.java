@@ -27,7 +27,7 @@ public class AdInterstitial {
         Resources res = context.getResources();
         this.handler = new ClickHandler();
         this.request = new AdRequest.Builder();
-        this.adUnits = MobileAds.resolveArrayRes(res, R.string.ad_interstitial);
+        this.adUnits = MobileAds.resolveArrayRes(res, R.string.ad_interstitials);
         this.showAfterClicks = res.getInteger(R.integer.ad_interstitial_show_after_clicks);
         this.hideDuration = res.getInteger(R.integer.ad_hide_duration);
 

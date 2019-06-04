@@ -2,7 +2,7 @@
 <resources>
 
     <string name="ad_banners"/>
-    <string name="ad_interstitial"/>
+    <string name="ad_interstitials"/>
     <string name="ad_keywords"/>
     <string name="ad_devices"/>
 

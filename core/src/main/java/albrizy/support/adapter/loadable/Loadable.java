@@ -1,51 +1,69 @@
 package albrizy.support.adapter.loadable;
 
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView.LayoutManager;
+import android.support.v7.widget.RecyclerView.OnScrollListener;
 
 import static android.support.v7.widget.RecyclerView.SCROLL_STATE_IDLE;
 
-public class Loadable extends RecyclerView.OnScrollListener {
+public class Loadable extends OnScrollListener {
 
-    @Nullable
-    OnLoadListener listener;
-    boolean loadMoreEnabled;
-    boolean isLoading;
+    public interface OnLoadListener {
+        void onLoad();
+    }
+
+    private OnLoadListener listener;
+    private boolean loadMoreEnabled = true;
+    private boolean isLoading;
     private int dy;
 
-    Loadable() {}
+    Loadable(OnLoadListener listener) {
+        this.listener = listener;
+    }
+
+    void setListener(OnLoadListener listener) {
+        this.listener = listener;
+    }
+
+    void setLoadMoreEnabled(boolean loadMoreEnabled) {
+        this.loadMoreEnabled = loadMoreEnabled;
+    }
+
+    void notifyLoadingCompleted() {
+        isLoading = false;
+    }
+
+    boolean isLoadMoreEnabled() {
+        return loadMoreEnabled;
+    }
 
     @Override
-    public void onScrolled(@NonNull RecyclerView recycler, int dx, int dy) {
+    public void onScrolled(@NonNull RecyclerView r, int dx, int dy) {
         this.dy = dy;
     }
 
     @Override
     @SuppressWarnings("ConstantConditions")
-    public void onScrollStateChanged(@NonNull RecyclerView recycler, int newState) {
-        if (listener == null) return;
-        if (newState == SCROLL_STATE_IDLE && dy > 0 && loadMoreEnabled) {
-            boolean bottom;
-            LayoutManager lm = recycler.getLayoutManager();
-            if (lm instanceof GridLayoutManager) {
-                bottom = ((GridLayoutManager) lm).findLastVisibleItemPosition()
-                        >= lm.getItemCount() - 1;
-            } else {
-                bottom = ((LinearLayoutManager) lm).findLastVisibleItemPosition()
-                        >= lm.getItemCount() - 1;
-            }
-            if (bottom && !isLoading) {
-                isLoading = true;
-                listener.onLoad();
+    public void onScrollStateChanged(@NonNull RecyclerView r, int state) {
+        if (state == SCROLL_STATE_IDLE) {
+            if (dy > 0) {
+                if (loadMoreEnabled && listener != null) {
+                    boolean bottom;
+                    LayoutManager lm = r.getLayoutManager();
+                    if (lm instanceof GridLayoutManager)
+                        bottom  = ((GridLayoutManager) lm).findLastVisibleItemPosition()
+                                >= lm.getItemCount() - 1;
+                    else bottom  = ((LinearLayoutManager) lm).findLastVisibleItemPosition()
+                            >= lm.getItemCount() - 1;
+                    if (bottom && !isLoading) {
+                        isLoading = true;
+                        listener.onLoad();
+                    }
+                }
             }
         }
-    }
-
-    public interface OnLoadListener {
-        void onLoad();
     }
 }

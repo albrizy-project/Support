@@ -25,20 +25,23 @@ public abstract class LoadableRVAdapter<T> extends RVAdapter<T> {
                              @NonNull List<T> items,
                              @Nullable Loadable.OnLoadListener listener) {
         super(context, items);
-        loadable = new Loadable();
-        loadable.listener = listener;
+        loadable = new Loadable(listener);
     }
 
     public void setListener(@Nullable Loadable.OnLoadListener listener) {
-        loadable.listener = listener;
+        loadable.setListener(listener);
     }
 
-    public void setLoadMoreEnabled(boolean loadMoreEnabled) {
-        loadable.loadMoreEnabled = loadMoreEnabled;
+    public void setLoadMoreEnabled(boolean enabled) {
+        loadable.setLoadMoreEnabled(enabled);
     }
 
     public void notifyLoadingCompleted() {
-        loadable.isLoading = false;
+        loadable.notifyLoadingCompleted();
+    }
+
+    public boolean getSpanSizeLookup(int position) {
+        return getItemViewType(position) == getLoadingType();
     }
 
     public int getLoadingType() {
@@ -86,7 +89,7 @@ public abstract class LoadableRVAdapter<T> extends RVAdapter<T> {
 
     @Override
     public int getItemCount() {
-        return loadable.loadMoreEnabled
+        return loadable.isLoadMoreEnabled()
                 ? getItems().size() + 1
                 : getItems().size();
     }

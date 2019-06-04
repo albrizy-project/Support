@@ -31,14 +31,17 @@ public abstract class RVAdapter<T> extends RecyclerView.Adapter<RVHolder> {
 
     public void setItems(@NonNull List<T> items) {
         this.items = items;
+        this.notifyDataSetChanged();
     }
 
     public void addItems(@NonNull List<T> items) {
         this.items.addAll(items);
+        this.notifyItemInserted(getItemCount());
     }
 
     public void addItem(@NonNull T item) {
         this.items.add(item);
+        this.notifyItemInserted(getItemCount());
     }
 
     public void clear() {
