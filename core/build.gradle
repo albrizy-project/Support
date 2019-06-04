@@ -34,7 +34,6 @@ dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation library.appcompat
     implementation library.design
-    implementation library.recyclerview
 
     implementation library.butterknife
     annotationProcessor library.butterknifecompiler
